@@ -9,7 +9,7 @@ const barChartApiBaseUrl = 'http://localhost:5000/api/bar-chart';
 const pieChartApiBaseUrl = 'http://localhost:5000/api/pie-chart';
 
 router.get('/', async (req, res) => {
-  const { month,search } = req.query;
+  const { month,search,page } = req.query;
 
   try {
     
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
     }
 
     
-    const itemsApiUrl = `${itemsApiBaseUrl}?month=${month}&search=${search}`;
+    const itemsApiUrl = `${itemsApiBaseUrl}?month=${month}&search=${search}&page=${page}`;
     const statsApiUrl = `${statsApiBaseUrl}?month=${month}`;
     const barChartApiUrl = `${barChartApiBaseUrl}?month=${month}`;
     const pieChartApiUrl = `${pieChartApiBaseUrl}?month=${month}`;

@@ -4,26 +4,26 @@ import './App.css';
 
 const TransactionList = () => {
   const [transactions, setTransactions] = useState([]);
-  const [selectedMonth, setSelectedMonth] = useState('March'); // Default selected month
+  const [selectedMonth, setSelectedMonth] = useState('January'); // Default selected month
   const [searchText, setSearchText] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(2);
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
    
-    fetchTransactions(selectedMonth, searchText);
+    fetchTransactions(selectedMonth, searchText,currentPage);
   }, [selectedMonth, searchText, currentPage]);
 
-  const fetchTransactions = async (month,search) => {
+  const fetchTransactions = async (month,search,page) => {
     try {
       const response = await axios.get(`http://localhost:5000/api/combined-api`, {
         params: {
-          month,search
+          month,search,page
         }
       });
       const data  = response.data;
       setTransactions(data.items.items);
-      setTotalPages(data.totalPages);
+      setTotalPages(data.items.totalPages);
     } catch (error) {
       console.error('Error fetching transactions:', error);
     }
@@ -52,7 +52,7 @@ const TransactionList = () => {
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
-    }
+          }
   };
 
   const handlePrevPage = () => {
@@ -115,6 +115,7 @@ const TransactionList = () => {
       <div className="pagination">
         <button onClick={handlePrevPage} disabled={currentPage === 1}>Previous</button>
         <button onClick={handleNextPage} disabled={currentPage === totalPages}>Next</button>
+        
       </div>
     </div>
   );
