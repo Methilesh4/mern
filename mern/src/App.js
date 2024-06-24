@@ -10,7 +10,7 @@ const TransactionList = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    // Load transactions for default month on initial render
+   
     fetchTransactions(selectedMonth, searchText);
   }, [selectedMonth, searchText, currentPage]);
 
@@ -31,22 +31,22 @@ const TransactionList = () => {
 
   const handleMonthChange = (event) => {
     setSelectedMonth(event.target.value);
-    setCurrentPage(1); // Reset to first page when month changes
+    setCurrentPage(1); 
   };
 
   const handleSearchChange = (event) => {
     setSearchText(event.target.value);
-    setCurrentPage(1); // Reset to first page when search text changes
+    setCurrentPage(1); 
   };
 
   const handleSearch = () => {
-    // Perform search based on current month and search text
+   
     fetchTransactions(selectedMonth, searchText, currentPage);
   };
 
   const handleClearSearch = () => {
     setSearchText('');
-    setCurrentPage(1); // Reset to first page when search text is cleared
+    setCurrentPage(1); 
   };
 
   const handleNextPage = () => {

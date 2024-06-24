@@ -3,13 +3,9 @@ const router = express.Router();
 const Item = require('../models/Item');
 const { ObjectId } = require('mongoose').Types;
 
-// @route   GET api/stats
-// @desc    Get statistics for selected month
-// @access  Public
 router.get('/', async (req, res) => {
   const { month } = req.query;
 
-  // Validate month input
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -20,7 +16,7 @@ router.get('/', async (req, res) => {
   }
 
   try {
-    // Calculate total sale amount for selected month
+    
     const totalSaleAmount = await Item.aggregate([
       {
         $match: {
@@ -38,7 +34,7 @@ router.get('/', async (req, res) => {
       }
     ]);
 
-    // Calculate total number of sold items for selected month
+   
     const totalSoldItems = await Item.countDocuments({
         sold: true,
         $expr: {
@@ -47,7 +43,7 @@ router.get('/', async (req, res) => {
       
     });
 
-    // Calculate total number of not sold items for selected month
+   
     const totalNotSoldItems = await Item.countDocuments({
       sold: false,
       $expr: {

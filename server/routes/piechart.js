@@ -2,13 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Item = require('../models/Item');
 
-// @route   GET api/pie-chart
-// @desc    Get data for pie chart showing unique categories and number of items for selected month
-// @access  Public
+
 router.get('/', async (req, res) => {
   const { month } = req.query;
 
-  // Validate month input
+  
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -19,7 +17,7 @@ router.get('/', async (req, res) => {
   }
 
   try {
-    // Aggregate to get counts for each category
+ 
     const categoryCounts = await Item.aggregate([
       {
         $match: {
@@ -36,7 +34,7 @@ router.get('/', async (req, res) => {
       }
     ]);
 
-    // Format the response to match the required format
+  
     const formattedData = categoryCounts.map(category => ({
       category: category._id,
       count: category.count

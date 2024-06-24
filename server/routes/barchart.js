@@ -2,13 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Item = require('../models/Item');
 
-// @route   GET api/bar-chart
-// @desc    Get data for bar chart showing price ranges and number of items for selected month
-// @access  Public
+
 router.get('/', async (req, res) => {
   const { month } = req.query;
 
-  // Validate month input
+ 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -19,7 +17,7 @@ router.get('/', async (req, res) => {
   }
 
   try {
-    // Aggregate to get counts in each price range
+    
     const priceRanges = [
       { min: 0, max: 100 },
       { min: 101, max: 200 },
@@ -30,7 +28,7 @@ router.get('/', async (req, res) => {
       { min: 601, max: 700 },
       { min: 701, max: 800 },
       { min: 801, max: 900 },
-      { min: 901, max: Infinity } // Infinity for prices above 900
+      { min: 901, max: Infinity } 
     ];
 
     const priceRangeCounts = [];
