@@ -104,3 +104,9 @@
   font-size: 16px;
   color: #333;
 }
+
+.chart-container {
+  margin-top: 20px;
+  height: 400px; /* Set a fixed height for the chart container */
+  position: relative;
+}

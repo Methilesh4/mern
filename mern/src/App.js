@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import axios from 'axios';
 import './App.css';
-
+import 'chart.js/auto';
+import { Bar } from 'react-chartjs-2';
 const TransactionList = () => {
   const [transactions, setTransactions] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState('January'); // Default selected month
@@ -9,9 +10,12 @@ const TransactionList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [statistics, setStatistics] = useState({ totalSaleAmount: 0, totalSoldItems: 0, totalNotSoldItems: 0 });
+  const [chartData, setchartData] = useState([]);
+  const barChartRef = useRef(null);
   useEffect(() => {
    
     fetchTransactions(selectedMonth, searchText,currentPage);
+    
   }, [selectedMonth, searchText, currentPage]);
 
   const fetchTransactions = async (month,search,page) => {
@@ -25,6 +29,7 @@ const TransactionList = () => {
       setTransactions(data.items.items);
       setTotalPages(data.items.totalPages);
       setStatistics(data.stats);
+      setchartData(data.barChart);
     } catch (error) {
       console.error('Error fetching transactions:', error);
     }
@@ -61,6 +66,44 @@ const TransactionList = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+  const renderBarChart = chartData.length > 0 && (
+    <div className="chart-container">
+      <Bar
+        ref={barChartRef}
+        data={{
+          labels: chartData.map(item => item.range),
+          datasets: [{
+            label: 'Number of Items',
+            data: chartData.map(item => item.count),
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+          }],
+        }}
+        options={{
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  let label = context.label || '';
+                  if (label) {
+                    label += ': ';
+                  }
+                  label += context.raw.toLocaleString();
+                  return label;
+                }
+              }
+            }
+          }
+        }}
+      />
+    </div>
+  );
 
   return (
     <div className="table-container">
@@ -127,7 +170,13 @@ const TransactionList = () => {
         <p>Total Sold Items: {statistics.totalSoldItems}</p>
         <p>Total Not Sold Items: {statistics.totalNotSoldItems}</p>
       </div>
+      <h2>Bar Chart Status-{selectedMonth}</h2>
+         {renderBarChart}
+        
+    
+ 
     </div>
+
     
   );
 };
