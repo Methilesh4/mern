@@ -6,9 +6,9 @@ const TransactionList = () => {
   const [transactions, setTransactions] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState('January'); // Default selected month
   const [searchText, setSearchText] = useState('');
-  const [currentPage, setCurrentPage] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
+  const [statistics, setStatistics] = useState({ totalSaleAmount: 0, totalSoldItems: 0, totalNotSoldItems: 0 });
   useEffect(() => {
    
     fetchTransactions(selectedMonth, searchText,currentPage);
@@ -24,11 +24,12 @@ const TransactionList = () => {
       const data  = response.data;
       setTransactions(data.items.items);
       setTotalPages(data.items.totalPages);
+      setStatistics(data.stats);
     } catch (error) {
       console.error('Error fetching transactions:', error);
     }
   };
-
+  
   const handleMonthChange = (event) => {
     setSelectedMonth(event.target.value);
     setCurrentPage(1); 
@@ -113,11 +114,21 @@ const TransactionList = () => {
       </table>
 
       <div className="pagination">
+        <p>Current page={currentPage}</p>
+        
         <button onClick={handlePrevPage} disabled={currentPage === 1}>Previous</button>
         <button onClick={handleNextPage} disabled={currentPage === totalPages}>Next</button>
         
+        <p>Total Pages={totalPages}</p>
+      </div>
+      <h2>Statistics-{selectedMonth}</h2>
+      <div className="statistics-box">
+        <p>Total Sale Amount: {statistics.totalSaleAmount}</p>
+        <p>Total Sold Items: {statistics.totalSoldItems}</p>
+        <p>Total Not Sold Items: {statistics.totalNotSoldItems}</p>
       </div>
     </div>
+    
   );
 };
 

@@ -1,4 +1,15 @@
-/* TableStyles.css */
+/* TransactionListStyles.css */
+
+.table-container {
+  padding: 20px;
+  
+}
+
+.table-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
 
 .data-table {
   width: 100%;
@@ -27,12 +38,69 @@
   background-color: #f1f1f1;
 }
 
-.table-container {
-  padding: 20px;
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.table-container h2 {
+.pagination button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  
+}
+
+.select-month,
+.search-box {
   margin-bottom: 20px;
-  font-size: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.search-box input {
+  padding: 10px;
+  font-size: 16px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-box button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-box button:last-child {
+  margin-left: 10px;
+  background-color: #dc3545;
+}
+
+/* New styles for statistics box */
+
+.statistics-box {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.statistics-box p {
+  margin: 0;
+  font-size: 16px;
   color: #333;
 }
