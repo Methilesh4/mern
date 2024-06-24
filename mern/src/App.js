@@ -2,7 +2,7 @@ import React, { useState, useEffect,useRef } from 'react';
 import axios from 'axios';
 import './App.css';
 import 'chart.js/auto';
-import { Bar } from 'react-chartjs-2';
+import { Bar,Pie} from 'react-chartjs-2';
 const TransactionList = () => {
   const [transactions, setTransactions] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState('January'); // Default selected month
@@ -12,6 +12,8 @@ const TransactionList = () => {
   const [statistics, setStatistics] = useState({ totalSaleAmount: 0, totalSoldItems: 0, totalNotSoldItems: 0 });
   const [chartData, setchartData] = useState([]);
   const barChartRef = useRef(null);
+  const [pieChartData, setPieChartData] = useState([]);
+  const pieChartRef = useRef(null);
   useEffect(() => {
    
     fetchTransactions(selectedMonth, searchText,currentPage);
@@ -30,6 +32,7 @@ const TransactionList = () => {
       setTotalPages(data.items.totalPages);
       setStatistics(data.stats);
       setchartData(data.barChart);
+      setPieChartData(data.pieChart);
     } catch (error) {
       console.error('Error fetching transactions:', error);
     }
@@ -66,6 +69,16 @@ const TransactionList = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+  // useEffect(() => {
+  //   return () => {
+  //     if (barChartRef.current) {
+  //       barChartRef.current.chartInstance.destroy();
+  //     }
+  //     if (pieChartRef.current) {
+  //       pieChartRef.current.chartInstance.destroy();
+  //     }
+  //   };
+  // }, []);
   const renderBarChart = chartData.length > 0 && (
     <div className="chart-container">
       <Bar
@@ -104,6 +117,40 @@ const TransactionList = () => {
       />
     </div>
   );
+  const renderPieChart = () => {
+    if (pieChartData.length > 0) {
+      return (
+        <div className="chart-container">
+          <Pie
+            ref={pieChartRef}
+            data={{
+              labels: pieChartData.map(item => item.category),
+              datasets: [{
+                data: pieChartData.map(item => item.count),
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.6)', // Red
+                  'rgba(54, 162, 235, 0.6)', // Blue
+                  'rgba(255, 206, 86, 0.6)', // Yellow
+                  'rgba(75, 192, 192, 0.6)', // Green
+                  'rgba(153, 102, 255, 0.6)', // Purple
+                  'rgba(255, 159, 64, 0.6)', // Orange
+                ],
+                hoverBackgroundColor: [
+                  'rgba(255, 99, 132, 1)', // Red
+                  'rgba(54, 162, 235, 1)', // Blue
+                  'rgba(255, 206, 86, 1)', // Yellow
+                  'rgba(75, 192, 192, 1)', // Green
+                  'rgba(153, 102, 255, 1)', // Purple
+                  'rgba(255, 159, 64, 1)', // Orange
+                ], // Your pie chart hover colors
+              }]
+            }}
+          />
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <div className="table-container">
@@ -172,9 +219,10 @@ const TransactionList = () => {
       </div>
       <h2>Bar Chart Status-{selectedMonth}</h2>
          {renderBarChart}
-        
+         <h2>Pie Chart Status -{selectedMonth}</h2>
+<center>{renderPieChart()}</center>
     
- 
+
     </div>
 
     
