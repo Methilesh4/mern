@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './App.css';
 
 const TransactionList = () => {
   const [transactions, setTransactions] = useState([]);
@@ -10,7 +11,7 @@ const TransactionList = () => {
 
   useEffect(() => {
     // Load transactions for default month on initial render
-    fetchTransactions(selectedMonth,searchText);
+    fetchTransactions(selectedMonth, searchText);
   }, [selectedMonth, searchText, currentPage]);
 
   const fetchTransactions = async (month,search) => {
@@ -61,29 +62,37 @@ const TransactionList = () => {
   };
 
   return (
-    <div>
+    <div className="table-container">
       <h2>Transactions List</h2>
 
-      {/* Month dropdown */}
-      <select value={selectedMonth} onChange={handleMonthChange}>
-        {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(month => (
-          <option key={month} value={month}>{month}</option>
-        ))}
-      </select>
+      <div className="select-month">
+        <select value={selectedMonth} onChange={handleMonthChange}>
+          {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(month => (
+            <option key={month} value={month}>{month}</option>
+          ))}
+        </select>
+      </div>
 
-      {/* Search box */}
-      <input type="text" value={searchText} onChange={handleSearchChange} placeholder="Search transaction..." />
-      <button onClick={handleSearch}>Search</button>
-      <button onClick={handleClearSearch}>Clear</button>
+      <div className="search-box">
+        <input
+          type="text"
+          value={searchText}
+          onChange={handleSearchChange}
+          placeholder="Search transaction..."
+        />
+        <button onClick={handleSearch}>Search</button>
+        <button onClick={handleClearSearch}>Clear</button>
+      </div>
 
-      {/* Transaction table */}
-      <table>
+      <table className="data-table">
         <thead>
           <tr>
             <th>ID</th>
             <th>Title</th>
             <th>Description</th>
             <th>Price</th>
+            <th>Sold</th>
+            <th>Category</th>
             <th>Date of Sale</th>
           </tr>
         </thead>
@@ -94,14 +103,16 @@ const TransactionList = () => {
               <td>{transaction.title}</td>
               <td>{transaction.description}</td>
               <td>{transaction.price}</td>
+              <td>{transaction.sold ? "Yes" : "No"}</td>
+              <td>{transaction.category}</td>
+              
               <td>{transaction.dateOfSale}</td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {/* Pagination */}
-      <div>
+      <div className="pagination">
         <button onClick={handlePrevPage} disabled={currentPage === 1}>Previous</button>
         <button onClick={handleNextPage} disabled={currentPage === totalPages}>Next</button>
       </div>
